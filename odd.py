@@ -1,14 +1,14 @@
-def checkOddInput(number):
-	''' check if the number is odd
-		return True if its odd number else false'''
+def isBoardSizeValid(boardSize):
+	''' check if the boardSize is valid
+		return True if its valid number else false'''
 	try:
-		number = int(number)
+		boardSize = int(boardSize)
 	except Exception as identifier:
 		return False
 
-	if number < 5 :
-		# smallest board passible
+	# smallest board passible
+	if boardSize < 5 :
 		return False
 
 	# check if this odd
-	return number%2 != 0
+	return boardSize % 2 != 0

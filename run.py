@@ -1,39 +1,45 @@
-from odd import checkOddInput
+from odd import isBoardSizeValid
 from play import *
 import random
 
 def rollTheDice():
-	''' roll the dice and return a random number between (1-6)'''
+	''' Roll the dice and return a random number between (1-6)'''
 	return random.randint(1, 6)
 
 if __name__ == '__main__':
 	
 	while True:
-		# get the n
-		n = input('Enter the board size: ')
-		if checkOddInput(n):
+		# get the board size
+		boardSize = input('Enter the board size (must be odd number): ')
+
+		# boardSize must be odd number
+		if isBoardSizeValid(boardSize):
 			break
 
 	# cast the input to int
-	n = int(n)
+	boardSize = int(boardSize)
 		
 	# play the Game
 	#
 
+	# this will be true if any player won
 	win = False
 	
-	# the turn between the players - True mean A's turn
+	### the turn between the players - True mean A's turn
 	turn = True
+	
 
 	# the players - 0 mean out of the board
 	# 1 mean in the start place
-	A = [1] + [0] * ( int( (n-3) // 2) -1 )
-	B = [1] + [0] * ( int( (n-3) // 2) -1 )
+	# -1 mean the stone already won
+	# calculate the number of characters for every player with this formula
+	A = [1] + [0] * ((boardSize - 3) // 2 - 1)
+	B = [1] + [0] * ((boardSize - 3) // 2 - 1)
 
 	
 
-	defaultAGenerator = defaultA(n)
-	defaultBGenerator = defaultB(n)
+	defaultAGenerator = defaultA(boardSize)
+	defaultBGenerator = defaultB(boardSize)
 	
 	print('-----------------------------------------------------------')
 	print('---------------------Start the Game------------------------')
@@ -43,22 +49,21 @@ if __name__ == '__main__':
 		
 		# roll the dice
 		dice = rollTheDice()
+		
 
-		print(f'The score (characters won)\n A: {A.count(-1)}, B: {B.count(-1)}')
+		print(f'The score (characters won) from total {len(A)}\n A: {A.count(-1)}, B: {B.count(-1)}')
 		print()
 		print('The player turn is: ' + ('A' if turn else 'B'))
 		print(f'The dice is {dice}')
 		print()
 
 		
-		# play the game
-		play(A, B, turn, dice, n, next(defaultAGenerator), next(defaultBGenerator))
-
-		# check if the player won
+		# play the game turn
+		play(A, B, turn, dice, boardSize, next(defaultAGenerator), next(defaultBGenerator))
 		
-		if all(map(lambda i: True if i == -1 else False, A)) or \
-			all(map(lambda i: True if i == -1 else False, B)):
-			win = True
+
+		# check if any player won
+		win = all(map(lambda i: i == -1, A)) or all(map(lambda i: i == -1, B))
 		
 		
 		print('-----------------------------------------------------------')

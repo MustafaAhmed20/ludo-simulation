@@ -1,4 +1,4 @@
-def checkerboard(n, a, b):
+def checkerboard(boardSize, a, b):
 	'''draw the game board
 	perm n: the board size
 	perm a: list of 'A' characters with postion in the path
@@ -6,59 +6,60 @@ def checkerboard(n, a, b):
 	'''
 
 	# the board . represented as list of lists
-	board = [['']*(n+1)] *(n+1)
+	board = [[''] * (boardSize + 1)] * (boardSize + 1)
 
 	# fixed width of the arm
 	width = 3
 
 	# the middle 
-	middle = n // 2
+	middle = boardSize // 2
 
 	# the middle area
-	middle_area = [middle-1, middle+1]
+	middle_area = [middle - 1, middle + 1]
 
 	# the First line
 	# the horizontal numbers with shift in the left
-	board [0] = [' '] + [str(i%10) for i in range(n)]
+	board [0] = [' '] + [str(i % 10) for i in range(boardSize)]
 	
-	for index, i in enumerate(range(n)):
+	for index, i in enumerate(range(boardSize)):
 		# tha main loop represent the vertical direction
 
 		# the line list
 		temp = []
 
 		# the number on the left
-		temp.append(str(index%10))
+		temp.append(str(index % 10))
 
 		# the up/down arm
-		if index == 0 or i == n-1:
-			temp.extend([i for i in ('*' * width).center(n,' ')])
+		if index == 0 or i == boardSize - 1:
+			temp.extend([i for i in ('*' * width).center(boardSize,' ')])
 
 		# the middle line
 		elif index == middle:
-			temp.extend([i for i in ('X'.center(n-2,'D').center(n, '*'))])
+			temp.extend([i for i in ('X'.center(boardSize - 2, 'D').center(boardSize, '*'))])
 
 		# the middle area
 		elif index in middle_area:
-			temp.extend([i for i in (('D').center(n,'*'))])
+			temp.extend([i for i in (('D').center(boardSize, '*'))])
 
 		else:
 			# the rest of the board
-			temp.extend([i for i in (('*D*').center(n,' '))])
+			temp.extend([i for i in (('*D*').center(boardSize, ' '))])
 		
 		
 		# add the line to the board
-		board[index+1] = temp
+		board[index + 1] = temp
 
 
 	# now insert the 'A' and 'B' characters
 	# draw the "A"s and the "B"s
+	
 	try:
 		for point in a:
-			if point ==0 or point == -1:
+			if point == 0 or point == -1:
 				# 0 mean the point is not in the board
 				continue
-			i, j = getlocation(n, point, 'A')
+			i, j = getlocation(boardSize, point, 'A')
 			board[int(i)][int(j)] = 'A'
 			
 
@@ -66,23 +67,23 @@ def checkerboard(n, a, b):
 			if point ==0 or point == -1:
 				# 0 mean the point is not in the board
 				continue
-			i, j = getlocation(n, point, 'B')
+			i, j = getlocation(boardSize, point, 'B')
 			board[int(i)][int(j)] = 'B'
 	except:
 		print(f'i: {i}   j:{j}')
-		raise e
+		
 	
 	# print the board
 	for line in board:
 		print(' '.join(line))
 
-def calculateFullPath(n):
+def calculateFullPath(boardSize):
 	''' return the full path number of points. without the 'D' Area or "X" point
-	perm n: the board size
+	perm boardSize: the board size
 	ex n = 9 -> 32
 	'''
 
-	horizontalWing = (n-1)/2
+	horizontalWing = (boardSize - 1) / 2
 	verticalWing = horizontalWing -1
 	
 	# all the dots in the board - without the 'D' or the 'X'
@@ -91,12 +92,12 @@ def calculateFullPath(n):
 	# cast it to int 
 	return int(path)
 
-def calculateWinPoint(n):
+def calculateWinPoint(boardSize):
 	''' return the number of points the character must move from the start to the end to win'''
 	
-	horizontalWing = (n-1)/2
+	horizontalWing = (boardSize - 1) / 2
 
-	path = calculateFullPath(n)
+	path = calculateFullPath(boardSize)
 
 	return path + horizontalWing
 
@@ -134,7 +135,7 @@ def getlocation(n, locationInPath, character):
 	# the middle 
 	middle = (n // 2) + 1
 	
-	point1 = fullPath/4
+	point1 = fullPath / 4
 	point2 = point1 * 2
 	point3 = point1 * 3
 	point4 = fullPath
@@ -165,38 +166,38 @@ def getlocation(n, locationInPath, character):
 		return (middle, 1)
 
 	
-	horizontalWing = (n-1)/2
-	verticalWing = horizontalWing -1
+	horizontalWing = (n - 1) / 2
+	verticalWing = horizontalWing - 1
 	
 	# 1. horizontal - up - left
 	if 1 <= locationInPath <= horizontalWing :
-		return (middle-1, locationInPath)
+		return (middle - 1, locationInPath)
 	
 	# 2. vertical - up - left
 	if horizontalWing < locationInPath < point1:
-		return(point1-locationInPath, middle-1)
+		return(point1 - locationInPath, middle - 1)
 	
 	# 4. vertical - up - right
 	if point1 < locationInPath <= (point1 + verticalWing):
-		return(locationInPath-point1, middle+1)
+		return(locationInPath - point1, middle + 1)
 
 	lastIndex = n
 	# 5. horizontal - up - right
 	if locationInPath < point2:
-		return (middle-1, lastIndex - (point2-locationInPath-1))
+		return (middle -1, lastIndex - (point2-locationInPath - 1))
 	
 	# 7. horizontal - down - right
 	if point2 < locationInPath <= (point2 + horizontalWing):
-		return (middle+1, lastIndex - (locationInPath-point2-1) )
+		return (middle + 1, lastIndex - (locationInPath-point2 - 1) )
 	
 	# 8. vertical - down - right
 	if locationInPath < point3:
-		return (lastIndex - (point3-locationInPath-1), middle+1)
+		return (lastIndex - (point3 -locationInPath - 1), middle + 1)
 	
 	# 10 vertical - down - left
-	if point3 < locationInPath <= (point3+verticalWing):
-		return (lastIndex -(locationInPath-point3-1), middle-1)
+	if point3 < locationInPath <= (point3 + verticalWing):
+		return (lastIndex -(locationInPath - point3 - 1), middle - 1)
 
 	# last section
 	# 11 horizontal - down - left
-	return (middle+1, point4-locationInPath)
+	return (middle + 1, point4 - locationInPath)

@@ -1,23 +1,23 @@
 from board import checkerboard, calculateFullPath, calculateWinPoint
 
-def defaultA(n):
+def defaultA(boardSize):
 	'''calculate the default 'A' position in the path
-	perm n: the size of the board
+	perm boardSize: the size of the board
 	return a nubmer which is the default postion for 'A' character
 	NOTICE: this is a generator - will calculate once '''
 
 	from board import calculateFullPath
 	
-	path = calculateFullPath(n)
+	path = calculateFullPath(boardSize)
 	
 	# 'A' postion is after point 1
-	point1 = int( path//4 )
+	point1 = path // 4
 
 	# use yield to calculate the value only once
 	while True:
 		yield point1 + 1
 
-def defaultB(n):
+def defaultB(boardSize):
 	'''calculate the default 'B' position in the path
 	perm n: the size of the board
 	return a nubmer which is the default postion for 'B' character
@@ -25,11 +25,11 @@ def defaultB(n):
 
 	from board import calculateFullPath
 	
-	path = calculateFullPath(n)
+	path = calculateFullPath(boardSize)
 	
 	# 'A' postion is after point 3
-	point1 = int( path//4 )
-	point3 = point1 *3
+	point1 = path // 4
+	point3 = point1 * 3
 
 	# use yield to calculate the value only once
 	while True:
@@ -84,12 +84,14 @@ def chooseCharacter(player, dice, fullPath):
 					# ask the user if want to get out a character from the house
 					while True:
 						answer = input(
-							"do you want to take out a character from the house or want to move ? (o, m)\n")
-						if answer.lower() == 'o' or answer.lower() == 'm':
+							"do you want to take out a character from the house or want to move? (o, m)\n")
+						
+						answer = answer.lower()
+						if answer == 'o' or answer == 'm':
 							break
 					
 					# take out the character
-					if answer.lower() == 'o':
+					if answer == 'o':
 						player[index] = 1
 						# no move
 						return -1

@@ -1,6 +1,11 @@
 # ludo-simulation
 simulation of ludo game with two players 'A' and 'B'.
 
+A starts from right up corner. B starts from left bottom corner as showed in the picture.
+
+![Screenshot](screenshot.png)
+
+
 ## Getting Started
 
 ### Prerequisites
