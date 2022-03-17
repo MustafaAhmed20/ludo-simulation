@@ -47,7 +47,7 @@ if __name__ == '__main__':
 	while not win:
 		# play till there is a winner
 		
-		# roll the dice
+		# Roll the dice
 		dice = rollTheDice()
 		
 

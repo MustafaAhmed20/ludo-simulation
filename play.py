@@ -84,7 +84,7 @@ def chooseCharacter(player, dice, fullPath):
 					# ask the user if want to get out a character from the house
 					while True:
 						answer = input(
-							"do you want to take out a character from the house or want to move? (o, m)\n")
+							"Do you want to take out a character from the house or want to move? (o, m)\n")
 						
 						answer = answer.lower()
 						if answer == 'o' or answer == 'm':
@@ -135,7 +135,7 @@ def chooseCharacter(player, dice, fullPath):
 				continue
 			
 			# must be valid input and valid move for the chosen character
-			if answer in range(1, len(player)+1) and validMove(player[answer-1], dice, fullPath):
+			if answer in range(1, len(player) + 1) and validMove(player[answer - 1], dice, fullPath):
 				# valid answer
 				return answer -1
 
